@@ -1,0 +1,521 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<UI version="4.0">
+ <class>diplom_v0Class</class>
+ <widget class="QMainWindow" name="diplom_v0Class">
+  <property name="objectName">
+   <string notr="true">diplom_v0Class</string>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1280</width>
+    <height>850</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Программно-аппаратный модуль для стенда «Методы цифровой модуляции»</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QVBoxLayout" name="verticalLayout_6">
+    <item>
+     <widget class="QGroupBox" name="groupBox_9">
+      <property name="title">
+       <string>Подключение устройств</string>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_6">
+       <item>
+        <widget class="QLabel" name="label_17">
+         <property name="text">
+          <string>ПРД:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="prdComPortComboBox"/>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_18">
+         <property name="text">
+          <string>ПРМ:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="prmComPortComboBox"/>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_19">
+         <property name="text">
+          <string>Генератор помех:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="interferenceComPortComboBox"/>
+       </item>
+       <item>
+        <widget class="QPushButton" name="connectButton">
+         <property name="text">
+          <string>Подключить</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="groupBox_5">
+      <property name="title">
+       <string>Общие параметры системы</string>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QLabel" name="label_10">
+         <property name="text">
+          <string>Несущая частота (МГц):</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSlider" name="carrierFrequencySlider">
+         <property name="minimum">
+          <number>2400</number>
+         </property>
+         <property name="maximum">
+          <number>2483</number>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSpinBox" name="carrierFrequencySpinBox">
+         <property name="minimum">
+          <number>2400</number>
+         </property>
+         <property name="maximum">
+          <number>2483</number>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_11">
+         <property name="text">
+          <string>Тип модуляции:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="modulationTypeComboBox">
+         <item>
+          <property name="text">
+           <string>2-FSK</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>GFSK</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>ASK/OOK</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>MSK</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_12">
+         <property name="text">
+          <string>Скорость передачи (кбод/с):</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSlider" name="baudRateSlider">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSpinBox" name="baudRateSpinBox"/>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_13">
+         <property name="text">
+          <string>Девиация частоты (кГц):</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="frequencyDeviationLineEdit"/>
+       </item>
+       <item>
+        <widget class="QPushButton" name="applyGeneralSettingsButton">
+         <property name="text">
+          <string>Применить</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QGroupBox" name="groupBox">
+        <property name="title">
+         <string>Передатчик (ПРД)</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item>
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>Выходная мощность (дБм):</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSlider" name="outputPowerSlider">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="groupBox_6">
+           <property name="title">
+            <string>Режим пакетов</string>
+           </property>
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <item>
+             <widget class="QRadioButton" name="fixedLengthRadioButton">
+              <property name="text">
+               <string>Фиксированная длина</string>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="variableLengthRadioButton">
+              <property name="text">
+               <string>Переменная длина</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>Длина пакета (байт):</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="packetLengthLineEdit"/>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="groupBox_7">
+           <property name="title">
+            <string>Источник данных</string>
+           </property>
+           <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <item>
+             <widget class="QRadioButton" name="textFieldRadioButton">
+              <property name="text">
+               <string>Текстовое поле</string>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="counterRadioButton">
+              <property name="text">
+               <string>Счетчик</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="fileRadioButton">
+              <property name="text">
+               <string>Файл</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPlainTextEdit" name="dataInputPlainTextEdit"/>
+         </item>
+         <item>
+          <widget class="QPushButton" name="startTransmissionButton">
+           <property name="text">
+            <string>Начать передачу</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="stopTransmissionButton">
+           <property name="text">
+            <string>Стоп</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="transmitterStatusLabel">
+           <property name="text">
+            <string>Статус: Ожидание</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="sentPacketsLabel">
+           <property name="text">
+            <string>Отправлено пакетов: 0</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="groupBox_2">
+        <property name="title">
+         <string>Канал связи / Помехи</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <item>
+          <widget class="QLabel" name="label_14">
+           <property name="text">
+            <string>(Визуализация радиоволны)</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="groupBox_8">
+           <property name="title">
+            <string>Генератор помех</string>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_5">
+            <item>
+             <widget class="QLabel" name="label_15">
+              <property name="text">
+               <string>Тип помехи:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="interferenceTypeComboBox">
+              <item>
+               <property name="text">
+                <string>Белый шум</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Синусоидальная</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_16">
+              <property name="text">
+               <string>Мощность помехи:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSlider" name="interferencePowerSlider">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="toggleInterferenceButton">
+              <property name="text">
+               <string>Включить помеху</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="groupBox_3">
+        <property name="title">
+         <string>Приемник (ПРМ)</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <item>
+          <widget class="QLabel" name="label_5">
+           <property name="text">
+            <string>Окно принятых данных:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPlainTextEdit" name="receivedDataPlainTextEdit"/>
+         </item>
+         <item>
+          <widget class="QLabel" name="rssiLabel">
+           <property name="text">
+            <string>RSSI: - дБм</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="lqiLabel">
+           <property name="text">
+            <string>LQI: -</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="packetCounterLabel">
+           <property name="text">
+            <string>Счетчик пакетов (Принято / ошибки CRC): 0 / 0</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="perLabel">
+           <property name="text">
+            <string>PER: 0%</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="groupBox_4">
+      <property name="title">
+       <string>Логгирование</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_4">
+       <item>
+        <widget class="QPlainTextEdit" name="logPlainTextEdit"/>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_5">
+         <item>
+          <widget class="QPushButton" name="clearLogButton">
+           <property name="text">
+            <string>Очистить лог</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="saveLogButton">
+           <property name="text">
+            <string>Сохранить лог в файл</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar"/>
+  <widget class="QToolBar" name="mainToolBar"/>
+  <widget class="QStatusBar" name="statusBar"/>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="diplom_v0.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>carrierFrequencySlider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>carrierFrequencySpinBox</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>167</x>
+     <y>69</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>275</x>
+     <y>72</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>carrierFrequencySpinBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>carrierFrequencySlider</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>285</x>
+     <y>65</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>194</x>
+     <y>74</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>baudRateSlider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>baudRateSpinBox</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>600</x>
+     <y>143</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>708</x>
+     <y>146</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>baudRateSpinBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>baudRateSlider</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>718</x>
+     <y>139</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>627</x>
+     <y>148</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</UI>
