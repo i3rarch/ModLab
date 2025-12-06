@@ -11,7 +11,7 @@
     <y>0</y>
     <width>1280</width>
     <height>850</height>
-   </rect>
+</rect>
   </property>
   <property name="windowTitle">
    <string>Программно-аппаратный модуль для стенда «Методы цифровой модуляции»</string>
@@ -21,45 +21,45 @@
     <item>
      <widget class="QGroupBox" name="groupBox_9">
       <property name="title">
-       <string>Подключение устройств</string>
+     <string>Подключение устройств</string>
       </property>
       <layout class="QHBoxLayout" name="horizontalLayout_6">
        <item>
         <widget class="QLabel" name="label_17">
          <property name="text">
-          <string>ПРД:</string>
+   <string>ПРД:</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QComboBox" name="prdComPortComboBox"/>
-       </item>
+   </item>
        <item>
         <widget class="QLabel" name="label_18">
          <property name="text">
           <string>ПРМ:</string>
-         </property>
+  </property>
         </widget>
        </item>
        <item>
         <widget class="QComboBox" name="prmComPortComboBox"/>
        </item>
-       <item>
-        <widget class="QLabel" name="label_19">
+   <item>
+     <widget class="QLabel" name="label_19">
          <property name="text">
           <string>Генератор помех:</string>
          </property>
-        </widget>
+   </widget>
        </item>
        <item>
         <widget class="QComboBox" name="interferenceComPortComboBox"/>
-       </item>
-       <item>
+   </item>
+  <item>
         <widget class="QPushButton" name="connectButton">
          <property name="text">
           <string>Подключить</string>
          </property>
-        </widget>
+ </widget>
        </item>
       </layout>
      </widget>
@@ -67,101 +67,232 @@
     <item>
      <widget class="QGroupBox" name="groupBox_5">
       <property name="title">
-       <string>Общие параметры системы</string>
+     <string>Общие параметры системы</string>
       </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_2">
-       <item>
-        <widget class="QLabel" name="label_10">
+      <layout class="QGridLayout" name="gridLayout_general">
+   <item row="0" column="0">
+    <widget class="QLabel" name="label_10">
          <property name="text">
-          <string>Несущая частота (МГц):</string>
-         </property>
+        <string>Несущая частота (МГц):</string>
+      </property>
         </widget>
        </item>
-       <item>
+   <item row="0" column="1">
         <widget class="QSlider" name="carrierFrequencySlider">
-         <property name="minimum">
-          <number>2400</number>
-         </property>
-         <property name="maximum">
+ <property name="minimum">
+   <number>2400</number>
+       </property>
+  <property name="maximum">
           <number>2483</number>
          </property>
-         <property name="orientation">
+ <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
         </widget>
-       </item>
-       <item>
+ </item>
+       <item row="0" column="2">
         <widget class="QSpinBox" name="carrierFrequencySpinBox">
          <property name="minimum">
-          <number>2400</number>
-         </property>
-         <property name="maximum">
-          <number>2483</number>
+  <number>2400</number>
+      </property>
+     <property name="maximum">
+    <number>2483</number>
          </property>
         </widget>
-       </item>
-       <item>
+    </item>
+       <item row="0" column="3">
         <widget class="QLabel" name="label_11">
-         <property name="text">
-          <string>Тип модуляции:</string>
+       <property name="text">
+   <string>Тип модуляции:</string>
          </property>
         </widget>
-       </item>
-       <item>
+   </item>
+       <item row="0" column="4">
         <widget class="QComboBox" name="modulationTypeComboBox">
          <item>
-          <property name="text">
-           <string>2-FSK</string>
-          </property>
+     <property name="text">
+  <string>2-FSK</string>
+        </property>
          </item>
          <item>
           <property name="text">
            <string>GFSK</string>
-          </property>
-         </item>
+   </property>
+      </item>
          <item>
-          <property name="text">
-           <string>ASK/OOK</string>
+        <property name="text">
+<string>ASK/OOK</string>
           </property>
-         </item>
-         <item>
+       </item>
+   <item>
           <property name="text">
-           <string>MSK</string>
+   <string>MSK</string>
           </property>
          </item>
         </widget>
        </item>
-       <item>
-        <widget class="QLabel" name="label_12">
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_12">
          <property name="text">
-          <string>Скорость передачи (кбод/с):</string>
+          <string>Скорость передачи (бод/с):</string>
          </property>
         </widget>
        </item>
-       <item>
-        <widget class="QSlider" name="baudRateSlider">
+       <item row="1" column="1">
+<widget class="QSlider" name="baudRateSlider">
+       <property name="minimum">
+  <number>1200</number>
+         </property>
+         <property name="maximum">
+        <number>500000</number>
+         </property>
+         <property name="singleStep">
+        <number>100</number>
+         </property>
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
-         </property>
+   </property>
         </widget>
        </item>
-       <item>
-        <widget class="QSpinBox" name="baudRateSpinBox"/>
+       <item row="1" column="2">
+        <widget class="QSpinBox" name="baudRateSpinBox">
+         <property name="minimum">
+   <number>1200</number>
+      </property>
+       <property name="maximum">
+    <number>500000</number>
+         </property>
+   <property name="singleStep">
+          <number>100</number>
+     </property>
+  </widget>
+   </item>
+       <item row="1" column="3">
+ <widget class="QLabel" name="label_13">
+ <property name="text">
+     <string>Девиация частоты (кГц):</string>
+    </property>
+        </widget>
+   </item>
+       <item row="1" column="4">
+        <widget class="QSpinBox" name="frequencyDeviationSpinBox">
+       <property name="minimum">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+    <number>500</number>
+      </property>
+     <property name="value">
+     <number>50</number>
+  </property>
+        </widget>
        </item>
-       <item>
-        <widget class="QLabel" name="label_13">
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_syncmode_tx">
          <property name="text">
-          <string>Девиация частоты (кГц):</string>
+          <string>Режим синхронизации ПРД:</string>
          </property>
         </widget>
        </item>
-       <item>
-        <widget class="QLineEdit" name="frequencyDeviationLineEdit"/>
+   <item row="2" column="1" colspan="2">
+  <widget class="QComboBox" name="syncModeTxComboBox">
+         <item>
+     <property name="text">
+           <string>0 - No sync</string>
+          </property>
+         </item>
+         <item>
+   <property name="text">
+           <string>1 - 15/16</string>
+          </property>
+         </item>
+         <item>
+     <property name="text">
+           <string>2 - 16/16</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>3 - 30/32</string>
+          </property>
+   </item>
+    <item>
+          <property name="text">
+         <string>4 - No sync + Carrier sense</string>
+      </property>
+         </item>
+ <item>
+  <property name="text">
+      <string>5 - 15/16 + Carrier sense</string>
+ </property>
+         </item>
+         <item>
+ <property name="text">
+           <string>6 - 16/16 + Carrier sense</string>
+        </property>
+         </item>
+         <item>
+  <property name="text">
+         <string>7 - 30/32 + Carrier sense</string>
+          </property>
+         </item>
+        </widget>
        </item>
-       <item>
+    <item row="2" column="3">
+        <widget class="QLabel" name="label_syncmode_rx">
+         <property name="text">
+          <string>Режим синхронизации ПРМ:</string>
+    </property>
+        </widget>
+       </item>
+<item row="2" column="4">
+     <widget class="QComboBox" name="syncModeRxComboBox">
+         <item>
+          <property name="text">
+           <string>0 - No sync</string>
+    </property>
+    </item>
+ <item>
+          <property name="text">
+           <string>1 - 15/16</string>
+    </property>
+   </item>
+         <item>
+    <property name="text">
+       <string>2 - 16/16</string>
+          </property>
+         </item>
+ <item>
+<property name="text">
+           <string>3 - 30/32</string>
+          </property>
+    </item>
+         <item>
+          <property name="text">
+           <string>4 - No sync + Carrier sense</string>
+</property>
+     </item>
+    <item>
+        <property name="text">
+         <string>5 - 15/16 + Carrier sense</string>
+      </property>
+         </item>
+         <item>
+  <property name="text">
+        <string>6 - 16/16 + Carrier sense</string>
+     </property>
+         </item>
+     <item>
+          <property name="text">
+           <string>7 - 30/32 + Carrier sense</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="3" column="4">
         <widget class="QPushButton" name="applyGeneralSettingsButton">
-         <property name="text">
-          <string>Применить</string>
+    <property name="text">
+        <string>Применить</string>
          </property>
         </widget>
        </item>
@@ -174,130 +305,181 @@
        <widget class="QGroupBox" name="groupBox">
         <property name="title">
          <string>Передатчик (ПРД)</string>
-        </property>
+     </property>
         <layout class="QVBoxLayout" name="verticalLayout">
          <item>
-          <widget class="QLabel" name="label">
+          <layout class="QHBoxLayout" name="horizontalLayout_power">
+           <item>
+        <widget class="QLabel" name="label">
+   <property name="text">
+      <string>Выходная мощность (дБм):</string>
+       </property>
+  </widget>
+      </item>
+           <item>
+  <widget class="QComboBox" name="outputPowerComboBox">
+   <item>
+       <property name="text">
+        <string>1</string>
+          </property>
+ </item>
+        <item>
+              <property name="text">
+            <string>0</string>
+         </property>
+        </item>
+      <item>
            <property name="text">
-            <string>Выходная мощность (дБм):</string>
-           </property>
-          </widget>
+    <string>-2</string>
+      </property>
+             </item>
+      <item>
+           <property name="text">
+ <string>-4</string>
+         </property>
          </item>
-         <item>
-          <widget class="QSlider" name="outputPowerSlider">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-          </widget>
+          <item>
+   <property name="text">
+             <string>-6</string>
+     </property>
          </item>
-         <item>
-          <widget class="QGroupBox" name="groupBox_6">
+       <item>
+          <property name="text">
+       <string>-8</string>
+    </property>
+             </item>
+           <item>
+              <property name="text">
+      <string>-10</string>
+   </property>
+ </item>
+       <item>
+   <property name="text">
+               <string>-16</string>
+</property>
+    </item>
+             <item>
+           <property name="text">
+      <string>-20</string>
+   </property>
+    </item>
+   <item>
+    <property name="text">
+               <string>-30</string>
+      </property>
+             </item>
+     </widget>
+  </item>
+          </layout>
+     </item>
+      <item>
+   <widget class="QGroupBox" name="groupBox_6">
            <property name="title">
             <string>Режим пакетов</string>
            </property>
-           <layout class="QHBoxLayout" name="horizontalLayout_3">
+ <layout class="QHBoxLayout" name="horizontalLayout_3">
             <item>
-             <widget class="QRadioButton" name="fixedLengthRadioButton">
-              <property name="text">
-               <string>Фиксированная длина</string>
+       <widget class="QRadioButton" name="fixedLengthRadioButton">
+   <property name="text">
+     <string>Фиксированная длина</string>
               </property>
-              <property name="checked">
-               <bool>true</bool>
+     <property name="checked">
+  <bool>true</bool>
               </property>
-             </widget>
-            </item>
+        </widget>
+       </item>
             <item>
              <widget class="QRadioButton" name="variableLengthRadioButton">
-              <property name="text">
+     <property name="text">
                <string>Переменная длина</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
+        </property>
           </widget>
-         </item>
+   </item>
+     </layout>
+          </widget>
+   </item>
          <item>
-          <widget class="QLabel" name="label_2">
+      <widget class="QLabel" name="label_2">
            <property name="text">
             <string>Длина пакета (байт):</string>
-           </property>
+      </property>
           </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="packetLengthLineEdit"/>
+   </item>
+ <item>
+       <widget class="QLineEdit" name="packetLengthLineEdit"/>
          </item>
          <item>
           <widget class="QGroupBox" name="groupBox_7">
            <property name="title">
             <string>Источник данных</string>
-           </property>
+         </property>
            <layout class="QHBoxLayout" name="horizontalLayout_4">
-            <item>
-             <widget class="QRadioButton" name="textFieldRadioButton">
-              <property name="text">
-               <string>Текстовое поле</string>
-              </property>
+ <item>
+  <widget class="QRadioButton" name="textFieldRadioButton">
+   <property name="text">
+      <string>Текстовое поле</string>
+   </property>
               <property name="checked">
                <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QRadioButton" name="counterRadioButton">
+     </property>
+      </widget>
+        </item>
+      <item>
+        <widget class="QRadioButton" name="counterRadioButton">
+     <property name="text">
+ <string>Счетчик</string>
+          </property>
+      </widget>
+     </item>
+<item>
+  <widget class="QRadioButton" name="fileRadioButton">
               <property name="text">
-               <string>Счетчик</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QRadioButton" name="fileRadioButton">
-              <property name="text">
-               <string>Файл</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
+  <string>Файл</string>
+       </property>
+        </widget>
+   </item>
+     </layout>
+    </widget>
+         </item>
+   <item>
+        <widget class="QPlainTextEdit" name="dataInputPlainTextEdit"/>
          </item>
          <item>
-          <widget class="QPlainTextEdit" name="dataInputPlainTextEdit"/>
-         </item>
-         <item>
-          <widget class="QPushButton" name="startTransmissionButton">
-           <property name="text">
+<widget class="QPushButton" name="startTransmissionButton">
+  <property name="text">
             <string>Начать передачу</string>
-           </property>
-          </widget>
+   </property>
+   </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="stopTransmissionButton">
+  <widget class="QPushButton" name="stopTransmissionButton">
            <property name="text">
-            <string>Стоп</string>
+          <string>Стоп</string>
            </property>
-          </widget>
+     </widget>
          </item>
          <item>
-          <widget class="QLabel" name="transmitterStatusLabel">
-           <property name="text">
-            <string>Статус: Ожидание</string>
-           </property>
-          </widget>
+ <widget class="QLabel" name="transmitterStatusLabel">
+        <property name="text">
+         <string>Статус: Ожидание</string>
+       </property>
+ </widget>
          </item>
-         <item>
+     <item>
           <widget class="QLabel" name="sentPacketsLabel">
-           <property name="text">
-            <string>Отправлено пакетов: 0</string>
-           </property>
+   <property name="text">
+        <string>Отправлено пакетов: 0</string>
+  </property>
           </widget>
          </item>
-        </layout>
+</layout>
        </widget>
       </item>
       <item>
        <widget class="QGroupBox" name="groupBox_2">
-        <property name="title">
+<property name="title">
          <string>Канал связи / Помехи</string>
-        </property>
+     </property>
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <item>
           <widget class="QLabel" name="label_14">
@@ -305,108 +487,132 @@
             <string>(Визуализация радиоволны)</string>
            </property>
            <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
+ <set>Qt::AlignCenter</set>
+       </property>
           </widget>
-         </item>
-         <item>
-          <widget class="QGroupBox" name="groupBox_8">
+   </item>
+      <item>
+     <widget class="QGroupBox" name="groupBox_8">
            <property name="title">
-            <string>Генератор помех</string>
-           </property>
+          <string>Генератор помех</string>
+       </property>
            <layout class="QVBoxLayout" name="verticalLayout_5">
             <item>
-             <widget class="QLabel" name="label_15">
+          <widget class="QLabel" name="label_15">
               <property name="text">
-               <string>Тип помехи:</string>
-              </property>
+        <string>Тип помехи:</string>
+           </property>
+     </widget>
+  </item>
+       <item>
+<widget class="QComboBox" name="interferenceTypeComboBox">
+         <item>
+        <property name="text">
+<string>Белый шум</string>
+</property>
+        </item>
+   <item>
+      <property name="text">
+          <string>Синусоидальная</string>
+     </property>
+   </item>
              </widget>
             </item>
-            <item>
-             <widget class="QComboBox" name="interferenceTypeComboBox">
-              <item>
-               <property name="text">
-                <string>Белый шум</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Синусоидальная</string>
-               </property>
-              </item>
-             </widget>
-            </item>
-            <item>
+   <item>
              <widget class="QLabel" name="label_16">
-              <property name="text">
-               <string>Мощность помехи:</string>
-              </property>
-             </widget>
+  <property name="text">
+    <string>Мощность помехи:</string>
+     </property>
+      </widget>
             </item>
-            <item>
+       <item>
              <widget class="QSlider" name="interferencePowerSlider">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
+  <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
              </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="toggleInterferenceButton">
+    </item>
+          <item>
+     <widget class="QPushButton" name="toggleInterferenceButton">
               <property name="text">
                <string>Включить помеху</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
+       </property>
+    </widget>
+ </item>
+     </layout>
           </widget>
          </item>
         </layout>
-       </widget>
-      </item>
+     </widget>
+</item>
       <item>
        <widget class="QGroupBox" name="groupBox_3">
         <property name="title">
          <string>Приемник (ПРМ)</string>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_3">
-         <item>
-          <widget class="QLabel" name="label_5">
+     <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_rxfilter">
+        <item>
+            <widget class="QLabel" name="label_rxfilter">
+             <property name="text">
+      <string>Полоса приёмного фильтра (кГц):</string>
+    </property>
+            </widget>
+   </item>
+  <item>
+    <widget class="QSpinBox" name="rxFilterBwSpinBox">
+             <property name="minimum">
+            <number>58</number>
+ </property>
+   <property name="maximum">
+   <number>812</number>
+  </property>
+       <property name="value">
+   <number>200</number>
+          </property>
+            </widget>
+ </item>
+          </layout>
+         </item>
+  <item>
+    <widget class="QLabel" name="label_5">
            <property name="text">
-            <string>Окно принятых данных:</string>
+ <string>Окно принятых данных:</string>
            </property>
           </widget>
-         </item>
-         <item>
+       </item>
+    <item>
           <widget class="QPlainTextEdit" name="receivedDataPlainTextEdit"/>
          </item>
          <item>
-          <widget class="QLabel" name="rssiLabel">
-           <property name="text">
-            <string>RSSI: - дБм</string>
-           </property>
-          </widget>
-         </item>
+ <widget class="QLabel" name="rssiLabel">
+  <property name="text">
+  <string>RSSI: - дБм</string>
+      </property>
+    </widget>
+ </item>
          <item>
           <widget class="QLabel" name="lqiLabel">
-           <property name="text">
-            <string>LQI: -</string>
+     <property name="text">
+      <string>LQI: -</string>
            </property>
           </widget>
-         </item>
+       </item>
          <item>
-          <widget class="QLabel" name="packetCounterLabel">
-           <property name="text">
-            <string>Счетчик пакетов (Принято / ошибки CRC): 0 / 0</string>
-           </property>
+       <widget class="QLabel" name="packetCounterLabel">
+        <property name="text">
+   <string>Счетчик пакетов (Принято / ошибки CRC): 0 / 0</string>
+      </property>
           </widget>
          </item>
-         <item>
-          <widget class="QLabel" name="perLabel">
+<item>
+   <widget class="QLabel" name="perLabel">
            <property name="text">
             <string>PER: 0%</string>
            </property>
           </widget>
-         </item>
+    </item>
         </layout>
        </widget>
       </item>
@@ -421,25 +627,25 @@
        <item>
         <widget class="QPlainTextEdit" name="logPlainTextEdit"/>
        </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_5">
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_5">
          <item>
           <widget class="QPushButton" name="clearLogButton">
            <property name="text">
-            <string>Очистить лог</string>
+       <string>Очистить лог</string>
            </property>
           </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="saveLogButton">
+   </item>
+ <item>
+  <widget class="QPushButton" name="saveLogButton">
            <property name="text">
-            <string>Сохранить лог в файл</string>
-           </property>
-          </widget>
+     <string>Сохранить лог в файл</string>
+ </property>
+</widget>
          </item>
-        </layout>
-       </item>
       </layout>
+       </item>
+  </layout>
      </widget>
     </item>
    </layout>
@@ -481,7 +687,7 @@
     </hint>
     <hint type="destinationlabel">
      <x>194</x>
-     <y>74</y>
+   <y>74</y>
     </hint>
    </hints>
   </connection>
@@ -508,8 +714,8 @@
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>718</x>
-     <y>139</y>
+   <x>718</x>
+   <y>139</y>
     </hint>
     <hint type="destinationlabel">
      <x>627</x>

@@ -7,8 +7,8 @@
 diplom_v0::diplom_v0(QWidget *parent)
     : QMainWindow(parent)
 {
-    ui.setupUi(this);
-    populateComPorts();
+  ui.setupUi(this);
+  populateComPorts();
 
     logMessage(QString::fromUtf8("Приложение запущено."));
 }
@@ -18,11 +18,11 @@ diplom_v0::~diplom_v0()
 
 void diplom_v0::populateComPorts()
 {
-    const auto infos = QSerialPortInfo::availablePorts();
-    for (const QSerialPortInfo &info : infos) {
-        ui.prdComPortComboBox->addItem(info.portName());
+ const auto infos = QSerialPortInfo::availablePorts();
+  for (const QSerialPortInfo &info : infos) {
+   ui.prdComPortComboBox->addItem(info.portName());
         ui.prmComPortComboBox->addItem(info.portName());
-        ui.interferenceComPortComboBox->addItem(info.portName());
+ ui.interferenceComPortComboBox->addItem(info.portName());
     }
     logMessage(QString::fromUtf8("Списки COM-портов обновлены."));
 }
@@ -35,11 +35,14 @@ void diplom_v0::logMessage(const QString& message)
 
 void diplom_v0::on_applyGeneralSettingsButton_clicked()
 {
-    QString log = QString::fromUtf8("Применены общие настройки: Частота: %1 МГц, Модуляция: %2, Скорость: %3 кбод/с, Девиация: %4 кГц")
-        .arg(ui.carrierFrequencySpinBox->value())
+    QString log = QString::fromUtf8("Применены общие настройки: Частота: %1 МГц, Модуляция: %2, Скорость: %3 бод/с, Девиация: %4 кГц, Синхр. ПРД: %5, Синхр. ПРМ: %6, Полоса ПРМ: %7 кГц")
+     .arg(ui.carrierFrequencySpinBox->value())
         .arg(ui.modulationTypeComboBox->currentText())
         .arg(ui.baudRateSpinBox->value())
-        .arg(ui.frequencyDeviationLineEdit->text());
+     .arg(ui.frequencyDeviationSpinBox->value())
+        .arg(ui.syncModeTxComboBox->currentIndex())
+    .arg(ui.syncModeRxComboBox->currentIndex())
+        .arg(ui.rxFilterBwSpinBox->value());
     logMessage(log);
 }
 
@@ -102,7 +105,7 @@ void diplom_v0::on_connectButton_clicked()
 void diplom_v0::on_modulationTypeComboBox_currentTextChanged(const QString &text)
 {
     bool isFsk = (text == "2-FSK" || text == "GFSK");
-    ui.frequencyDeviationLineEdit->setEnabled(isFsk);
+    ui.frequencyDeviationSpinBox->setEnabled(isFsk);
     logMessage(QString::fromUtf8("Тип модуляции изменен на: %1").arg(text));
 }
 
@@ -113,18 +116,18 @@ void diplom_v0::on_carrierFrequencySlider_valueChanged(int value)
 
 void diplom_v0::on_baudRateSlider_valueChanged(int value)
 {
-    logMessage(QString::fromUtf8("Скорость передачи изменена на: %1 кбод/с").arg(value));
+    logMessage(QString::fromUtf8("Скорость передачи изменена на: %1 бод/с").arg(value));
 }
 
-void diplom_v0::on_outputPowerSlider_valueChanged(int value)
+void diplom_v0::on_outputPowerComboBox_currentTextChanged(const QString &text)
 {
-    logMessage(QString::fromUtf8("Выходная мощность изменена на: %1 дБм").arg(value));
+ logMessage(QString::fromUtf8("Выходная мощность изменена на: %1 дБм").arg(text));
 }
 
 void diplom_v0::on_fixedLengthRadioButton_toggled(bool checked)
 {
     ui.packetLengthLineEdit->setEnabled(checked);
-    logMessage(QString::fromUtf8("Режим пакетов изменен на: %1").arg(checked ? QString::fromUtf8("Фиксированная длина") : QString::fromUtf8("Переменная длина")));
+ logMessage(QString::fromUtf8("Режим пакетов изменен на: %1").arg(checked ? QString::fromUtf8("Фиксированная длина") : QString::fromUtf8("Переменная длина")));
 }
 
 void diplom_v0::on_textFieldRadioButton_toggled(bool checked)
@@ -147,6 +150,26 @@ void diplom_v0::on_baudRateSpinBox_valueChanged(int value)
 {
     // Этот слот нужен для автоматического подключения,
     // но логирование уже обрабатывается on_baudRateSlider_valueChanged,
-    // с которым он синхронизирован. Оставляем пустым, чтобы избежать дублирования.
+  // с которым он синхронизирован. Оставляем пустым, чтобы избежать дублирования.
+}
+
+void diplom_v0::on_syncModeTxComboBox_currentTextChanged(const QString &text)
+{
+    logMessage(QString::fromUtf8("Режим синхронизации ПРД изменен на: %1").arg(text));
+}
+
+void diplom_v0::on_syncModeRxComboBox_currentTextChanged(const QString &text)
+{
+    logMessage(QString::fromUtf8("Режим синхронизации ПРМ изменен на: %1").arg(text));
+}
+
+void diplom_v0::on_rxFilterBwSpinBox_valueChanged(int value)
+{
+    logMessage(QString::fromUtf8("Полоса приёмного фильтра изменена на: %1 кГц").arg(value));
+}
+
+void diplom_v0::on_frequencyDeviationSpinBox_valueChanged(int value)
+{
+    logMessage(QString::fromUtf8("Девиация частоты изменена на: %1 кГц").arg(value));
 }
 

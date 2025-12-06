@@ -25,12 +25,16 @@ private slots:
     void on_modulationTypeComboBox_currentTextChanged(const QString &text);
     void on_carrierFrequencySlider_valueChanged(int value);
     void on_baudRateSlider_valueChanged(int value);
-    void on_outputPowerSlider_valueChanged(int value);
+    void on_outputPowerComboBox_currentTextChanged(const QString &text);
     void on_fixedLengthRadioButton_toggled(bool checked);
     void on_textFieldRadioButton_toggled(bool checked);
     void on_interferenceTypeComboBox_currentTextChanged(const QString &text);
     void on_interferencePowerSlider_valueChanged(int value);
     void on_baudRateSpinBox_valueChanged(int value);
+    void on_syncModeTxComboBox_currentTextChanged(const QString &text);
+    void on_syncModeRxComboBox_currentTextChanged(const QString &text);
+    void on_rxFilterBwSpinBox_valueChanged(int value);
+    void on_frequencyDeviationSpinBox_valueChanged(int value);
 
 
 private:
