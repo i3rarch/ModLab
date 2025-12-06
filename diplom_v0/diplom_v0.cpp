@@ -173,3 +173,59 @@ void diplom_v0::on_frequencyDeviationSpinBox_valueChanged(int value)
     logMessage(QString::fromUtf8("Девиация частоты изменена на: %1 кГц").arg(value));
 }
 
+bool diplom_v0::parseHexValue(const QString& text, uint8_t& value)
+{
+    QString trimmed = text.trimmed();
+    bool ok = false;
+    
+    if (trimmed.startsWith("0x", Qt::CaseInsensitive)) {
+value = trimmed.mid(2).toUInt(&ok, 16);
+    } else {
+        value = trimmed.toUInt(&ok, 16);
+    }
+    
+    return ok;
+}
+
+void diplom_v0::on_setCustomRegTxButton_clicked()
+{
+    uint8_t addr, val;
+    
+    if (!parseHexValue(ui.customRegAddrTxLineEdit->text(), addr)) {
+      logMessage(QString::fromUtf8("Ошибка: Неверный формат адреса ПРД. Используйте формат 0x00."));
+   return;
+    }
+    
+    if (!parseHexValue(ui.customRegValueTxLineEdit->text(), val)) {
+        logMessage(QString::fromUtf8("Ошибка: Неверный формат значения ПРД. Используйте формат 0x00."));
+  return;
+    }
+    
+    logMessage(QString::fromUtf8("ПРД: Запись в регистр 0x%1 значения 0x%2")
+        .arg(addr, 2, 16, QChar('0')).toUpper()
+        .arg(val, 2, 16, QChar('0')).toUpper());
+    
+    // TODO: Здесь будет логика записи регистра через COM-порт
+}
+
+void diplom_v0::on_setCustomRegRxButton_clicked()
+{
+    uint8_t addr, val;
+    
+    if (!parseHexValue(ui.customRegAddrRxLineEdit->text(), addr)) {
+ logMessage(QString::fromUtf8("Ошибка: Неверный формат адреса ПРМ. Используйте формат 0x00."));
+        return;
+    }
+    
+    if (!parseHexValue(ui.customRegValueRxLineEdit->text(), val)) {
+        logMessage(QString::fromUtf8("Ошибка: Неверный формат значения ПРМ. Используйте формат 0x00."));
+        return;
+    }
+
+    logMessage(QString::fromUtf8("ПРМ: Запись в регистр 0x%1 значения 0x%2")
+        .arg(addr, 2, 16, QChar('0')).toUpper()
+     .arg(val, 2, 16, QChar('0')).toUpper());
+    
+    // TODO: Здесь будет логика записи регистра через COM-порт
+}
+

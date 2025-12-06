@@ -716,8 +716,73 @@
       </property>
   </widget>
          </item>
+         <item>
+          <widget class="Line" name="line_tx_custom">
+           <property name="orientation">
+   <enum>Qt::Horizontal</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+    <widget class="QLabel" name="label_custom_reg_tx">
+       <property name="text">
+   <string>Ручная устновка регистра:</string>
+  </property>
+          </widget>
+         </item>
+         <item>
+<layout class="QHBoxLayout" name="layout_custom_reg_tx">
+           <item>
+            <widget class="QLabel" name="label_addr_tx">
+      <property name="text">
+   <string>Адрес:</string>
+         </property>
+        </widget>
+    </item>
+    <item>
+   <widget class="QLineEdit" name="customRegAddrTxLineEdit">
+             <property name="placeholderText">
+    <string>0x00</string>
+             </property>
+ <property name="maximumSize">
+              <size>
+       <width>60</width>
+   <height>16777215</height>
+      </size>
+    </property>
+ </widget>
+         </item>
+ <item>
+     <widget class="QLabel" name="label_value_tx">
+     <property name="text">
+            <string>Значение:</string>
+             </property>
+            </widget>
+      </item>
+       <item>
+            <widget class="QLineEdit" name="customRegValueTxLineEdit">
+             <property name="placeholderText">
+     <string>0x00</string>
+         </property>
+      <property name="maximumSize">
+     <size>
+               <width>60</width>
+    <height>16777215</height>
+         </size>
+         </property>
+  </widget>
+           </item>
+         <item>
+ <widget class="QPushButton" name="setCustomRegTxButton">
+    <property name="text">
+   <string>Записать</string>
+       </property>
+            </widget>
+      </item>
+          </layout>
+         </item>
         </layout>
-     </widget>
+  </widget>
       </item>
       <!-- Канал связи / Помехи -->
    <item>
@@ -902,15 +967,80 @@
          <item>
           <widget class="QLabel" name="perLabel">
          <property name="text">
-      <string>PER: 0%</string>
-           </property>
+   <string>PER: 0%</string>
+  </property>
            <property name="styleSheet">
    <string>font-weight: bold; color: #006400;</string>
        </property>
           </widget>
      </item>
+         <item>
+          <widget class="Line" name="line_rx_custom">
+      <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+   </property>
+          </widget>
+         </item>
+         <item>
+ <widget class="QLabel" name="label_custom_reg_rx">
+    <property name="text">
+  <string>Ручная установка регистра:</string>
+           </property>
+     </widget>
+   </item>
+         <item>
+          <layout class="QHBoxLayout" name="layout_custom_reg_rx">
+           <item>
+     <widget class="QLabel" name="label_addr_rx">
+   <property name="text">
+  <string>Адрес:</string>
+             </property>
+   </widget>
+           </item>
+           <item>
+     <widget class="QLineEdit" name="customRegAddrRxLineEdit">
+          <property name="placeholderText">
+        <string>0x00</string>
+       </property>
+             <property name="maximumSize">
+              <size>
+               <width>60</width>
+    <height>16777215</height>
+     </size>
+             </property>
+     </widget>
+      </item>
+<item>
+ <widget class="QLabel" name="label_value_rx">
+       <property name="text">
+          <string>Значение:</string>
+             </property>
+      </widget>
+           </item>
+     <item>
+ <widget class="QLineEdit" name="customRegValueRxLineEdit">
+         <property name="placeholderText">
+    <string>0x00</string>
+    </property>
+       <property name="maximumSize">
+   <size>
+               <width>60</width>
+         <height>16777215</height>
+              </size>
+       </property>
+     </widget>
+           </item>
+         <item>
+      <widget class="QPushButton" name="setCustomRegRxButton">
+   <property name="text">
+              <string>Записать</string>
+             </property>
+   </widget>
+      </item>
+          </layout>
+         </item>
  </layout>
-       </widget>
+  </widget>
       </item>
    </layout>
     </item>

@@ -37,9 +37,15 @@ private slots:
     void on_frequencyDeviationSpinBox_valueChanged(int value);
 
 
+    // Кастомные регистры
+    void on_setCustomRegTxButton_clicked();
+    void on_setCustomRegRxButton_clicked();
+
+
 private:
     void logMessage(const QString& message);
     void populateComPorts();
+    bool parseHexValue(const QString& text, uint8_t& value);
     Ui::diplom_v0Class ui;
 };
 
