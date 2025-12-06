@@ -7,8 +7,8 @@
 diplom_v0::diplom_v0(QWidget *parent)
     : QMainWindow(parent)
 {
-  ui.setupUi(this);
-  populateComPorts();
+    ui.setupUi(this);
+    populateComPorts();
 
     logMessage(QString::fromUtf8("Приложение запущено."));
 }
