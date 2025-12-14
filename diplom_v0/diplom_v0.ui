@@ -797,7 +797,7 @@
   <item>
           <widget class="QLabel" name="label_visualization">
          <property name="text">
- <string>(Визуализация радиоволны)</string>
+ <string>(              )</string>
            </property>
          <property name="alignment">
      <set>Qt::AlignCenter</set>
