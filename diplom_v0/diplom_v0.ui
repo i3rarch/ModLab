@@ -985,7 +985,7 @@
  <widget class="QLabel" name="label_custom_reg_rx">
     <property name="text">
   <string>Ручная установка регистра:</string>
-           </property>
+           </property>                                          
      </widget>
    </item>
          <item>

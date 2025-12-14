@@ -26,9 +26,6 @@
     <QtRcc Include="diplom_v0.qrc">
       <Filter>Resource Files</Filter>
     </QtRcc>
-    <QtUic Include="diplom_v0.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
     <QtMoc Include="diplom_v0.h">
       <Filter>Header Files</Filter>
     </QtMoc>
@@ -40,5 +37,10 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="diplom_v0.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
   </ItemGroup>
 </Project>
