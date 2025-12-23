@@ -12,20 +12,28 @@
 #include <QCheckBox>
 #include <QLabel>
 
+// Фиксированные значения скорости передачи
+static const int BAUD_RATES[] = { 1200, 2400, 4800, 9600, 19200, 38400, 57600, 125000, 250000, 500000 };
+static const int BAUD_RATES_COUNT = sizeof(BAUD_RATES) / sizeof(BAUD_RATES[0]);
+
 diplom_v0::diplom_v0(QWidget *parent)
-    : QMainWindow(parent)
-    , m_prdPort(new QSerialPort(this))
-  , m_prmPort(new QSerialPort(this))
+  : QMainWindow(parent)
+, m_prdPort(new QSerialPort(this))
+    , m_prmPort(new QSerialPort(this))
     , m_interferencePort(new QSerialPort(this))
     , m_isConnected(false)
     , m_rxPacketCount(0)
     , m_rxCrcErrorCount(0)
     , m_txPacketCount(0)
     , m_cyclicTimer(new QTimer(this))
-  , m_cyclicTransmissionActive(false)
+    , m_cyclicTransmissionActive(false)
 {
-  ui.setupUi(this);
+    ui.setupUi(this);
     populateComPorts();
+
+// Синхронизация слайдера и комбобокса скорости
+    connect(ui.baudRateSlider, &QSlider::valueChanged, ui.baudRateComboBox, &QComboBox::setCurrentIndex);
+    connect(ui.baudRateComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), ui.baudRateSlider, &QSlider::setValue);
 
     // Подключаем сигналы приёма данных
     connect(m_prdPort, &QSerialPort::readyRead, this, &diplom_v0::onPrdDataReceived);
@@ -203,16 +211,18 @@ void diplom_v0::populateComPorts()
     ui.prmComPortComboBox->clear();
     ui.interferenceComPortComboBox->clear();
     
- // Добавляем пустой элемент для генератора помех
+    // Добавляем пустой элемент для всех устройств (опциональное подключение)
+    ui.prdComPortComboBox->addItem(QString::fromUtf8("-- Не использовать --"), "");
+    ui.prmComPortComboBox->addItem(QString::fromUtf8("-- Не использовать --"), "");
     ui.interferenceComPortComboBox->addItem(QString::fromUtf8("-- Не использовать --"), "");
     
     const auto infos = QSerialPortInfo::availablePorts();
     for (const QSerialPortInfo &info : infos) {
-    QString displayText = info.portName() + " (" + info.description() + ")";
+        QString displayText = info.portName() + " (" + info.description() + ")";
         ui.prdComPortComboBox->addItem(displayText, info.portName());
-        ui.prmComPortComboBox->addItem(displayText, info.portName());
- ui.interferenceComPortComboBox->addItem(displayText, info.portName());
-  }
+  ui.prmComPortComboBox->addItem(displayText, info.portName());
+        ui.interferenceComPortComboBox->addItem(displayText, info.portName());
+    }
     logMessage(QString::fromUtf8("Списки COM-портов обновлены. Найдено портов: %1").arg(infos.size()));
 }
 
@@ -448,15 +458,15 @@ void diplom_v0::on_connectButton_clicked()
         // Останавливаем циклическую передачу
         m_cyclicTimer->stop();
         m_cyclicTransmissionActive = false;
-   QCheckBox* cb = findChild<QCheckBox*>("cyclicCheckBox");
-        if (cb) cb->setChecked(false);
+        QCheckBox* cb = findChild<QCheckBox*>("cyclicCheckBox");
+  if (cb) cb->setChecked(false);
         
-      // Отключаемся
+        // Отключаемся
         closeAllPorts();
-        m_isConnected = false;
-   ui.connectButton->setText(QString::fromUtf8("Подключить"));
+    m_isConnected = false;
+  ui.connectButton->setText(QString::fromUtf8("Подключить"));
         ui.transmitterStatusLabel->setText(QString::fromUtf8("Статус: Отключено"));
-        logMessage(QString::fromUtf8("Отключено от устройств"));
+   logMessage(QString::fromUtf8("Отключено от устройств"));
     } else {
         // Подключаемся
         QString prdPortName = ui.prdComPortComboBox->currentData().toString();
@@ -464,63 +474,75 @@ void diplom_v0::on_connectButton_clicked()
     QString intPortName = ui.interferenceComPortComboBox->currentData().toString();
         
         bool prdOk = false;
-     bool prmOk = false;
-        bool intOk = false;
+        bool prmOk = false;
+ bool intOk = false;
         
-        // Подключаем ПРД
+        QStringList usedPorts; // Список уже используемых портов
+        
+        // Подключаем ПРД (опционально)
         if (!prdPortName.isEmpty()) {
-     prdOk = openSerialPort(m_prdPort, prdPortName, QString::fromUtf8("ПРД"));
-     } else {
-            logMessage(QString::fromUtf8("ПРД: Порт не выбран"));
-        }
-        
-        // Подключаем ПРМ (если отличается от ПРД)
-        if (!prmPortName.isEmpty()) {
-            if (prmPortName != prdPortName) {
-            prmOk = openSerialPort(m_prmPort, prmPortName, QString::fromUtf8("ПРМ"));
-      } else {
-     logMessage(QString::fromUtf8("ПРМ: Тот же порт что и ПРД, пропускаем"));
-        }
-        } else {
-            logMessage(QString::fromUtf8("ПРМ: Порт не выбран"));
-        }
-        
-    // Подключаем генератор помех (опционально, только если порт отличается)
-    if (!intPortName.isEmpty() && intPortName != prdPortName && intPortName != prmPortName) {
-          intOk = openSerialPort(m_interferencePort, intPortName, QString::fromUtf8("Генератор помех"));
-         if (!intOk) {
-           logMessage(QString::fromUtf8("Генератор помех: Продолжаем без генератора"));
+  prdOk = openSerialPort(m_prdPort, prdPortName, QString::fromUtf8("ПРД"));
+      if (prdOk) {
+       usedPorts << prdPortName;
      }
-        } else if (intPortName.isEmpty()) {
-          logMessage(QString::fromUtf8("Генератор помех: Не используется"));
+        } else {
+            logMessage(QString::fromUtf8("ПРД: Не используется"));
         }
         
-        // Успех если подключился хотя бы один из основных устройств (ПРД или ПРМ)
-  if (prdOk || prmOk) {
-            m_isConnected = true;
-     ui.connectButton->setText(QString::fromUtf8("Отключить"));
-     
+        // Подключаем ПРМ (опционально, если порт не занят)
+        if (!prmPortName.isEmpty()) {
+   if (!usedPorts.contains(prmPortName)) {
+    prmOk = openSerialPort(m_prmPort, prmPortName, QString::fromUtf8("ПРМ"));
+            if (prmOk) {
+            usedPorts << prmPortName;
+         }
+  } else {
+   logMessage(QString::fromUtf8("ПРМ: Порт %1 уже используется другим устройством").arg(prmPortName));
+   }
+        } else {
+    logMessage(QString::fromUtf8("ПРМ: Не используется"));
+      }
+   
+        // Подключаем генератор помех (опционально, если порт не занят)
+        if (!intPortName.isEmpty()) {
+  if (!usedPorts.contains(intPortName)) {
+        intOk = openSerialPort(m_interferencePort, intPortName, QString::fromUtf8("Генератор помех"));
+    if (intOk) {
+usedPorts << intPortName;
+      }
+            } else {
+   logMessage(QString::fromUtf8("Генератор помех: Порт %1 уже используется другим устройством").arg(intPortName));
+            }
+        } else {
+    logMessage(QString::fromUtf8("Генератор помех: Не используется"));
+        }
+        
+        // Успех если подключилось хотя бы одно устройство
+      if (prdOk || prmOk || intOk) {
+  m_isConnected = true;
+            ui.connectButton->setText(QString::fromUtf8("Отключить"));
+            
     QString status = QString::fromUtf8("Статус: Подключено (");
             QStringList connected;
-   if (prdOk) connected << QString::fromUtf8("ПРД");
-            if (prmOk) connected << QString::fromUtf8("ПРМ");
+        if (prdOk) connected << QString::fromUtf8("ПРД");
+    if (prmOk) connected << QString::fromUtf8("ПРМ");
             if (intOk) connected << QString::fromUtf8("Генератор");
-      status += connected.join(", ") + ")";
-            
+    status += connected.join(", ") + ")";
+          
  ui.transmitterStatusLabel->setText(status);
- logMessage(QString::fromUtf8("Подключение выполнено: %1").arg(connected.join(", ")));
- 
-       // Сбрасываем счётчики
-      m_txPacketCount = 0;
-            ui.sentPacketsLabel->setText(QString::fromUtf8("Отправлено пакетов: 0"));
-  clearRxStats();
- } else {
-       closeAllPorts();
-        logMessage(QString::fromUtf8("Ошибка: Не удалось подключиться ни к ПРД, ни к ПРМ"));
-          QMessageBox::warning(this, QString::fromUtf8("Ошибка подключения"),
-      QString::fromUtf8("Не удалось подключиться к устройствам.\n"
-      "Проверьте, что порты не заняты другими программами\n"
-          "(например, Arduino IDE Serial Monitor)."));
+     logMessage(QString::fromUtf8("Подключение выполнено: %1").arg(connected.join(", ")));
+            
+            // Сбрасываем счётчики
+ m_txPacketCount = 0;
+       ui.sentPacketsLabel->setText(QString::fromUtf8("Отправлено пакетов: 0"));
+ clearRxStats();
+  } else {
+            closeAllPorts();
+         logMessage(QString::fromUtf8("Ошибка: Не удалось подключиться ни к одному устройству"));
+            QMessageBox::warning(this, QString::fromUtf8("Ошибка подключения"),
+   QString::fromUtf8("Не удалось подключиться к устройствам.\n"
+            "Выберите хотя бы одно устройство и проверьте,\n"
+              "что порты не заняты другими программами."));
         }
     }
 }
@@ -529,43 +551,44 @@ void diplom_v0::on_applyGeneralSettingsButton_clicked()
 {
     // Формируем команды для устройств
     int freq = ui.carrierFrequencySpinBox->value() * 1000; // МГц -> кГц
-    int baud = ui.baudRateSpinBox->value();
+    int baudIndex = ui.baudRateComboBox->currentIndex();
+    int baud = (baudIndex >= 0 && baudIndex < BAUD_RATES_COUNT) ? BAUD_RATES[baudIndex] : 9600;
     QString mod;
     switch (ui.modulationTypeComboBox->currentIndex()) {
-      case 0: mod = "2fsk"; break;
+        case 0: mod = "2fsk"; break;
         case 1: mod = "gfsk"; break;
-      case 2: mod = "ook"; break;
-   case 3: mod = "msk"; break;
-        default: mod = "2fsk";
-    }
-  int dev = ui.frequencyDeviationSpinBox->value();
-    int syncTx = ui.syncModeTxComboBox->currentIndex();
+        case 2: mod = "ook"; break;
+        case 3: mod = "msk"; break;
+     default: mod = "2fsk";
+ }
+    int dev = ui.frequencyDeviationSpinBox->value();
+  int syncTx = ui.syncModeTxComboBox->currentIndex();
     int syncRx = ui.syncModeRxComboBox->currentIndex();
     int bw = ui.rxFilterBwSpinBox->value();
     
     // Отправляем команды на ПРД
     if (m_prdPort->isOpen()) {
-   sendCommandToPrd(QString("sf %1").arg(freq));
-      QThread::msleep(50);
-      sendCommandToPrd(QString("sb %1").arg(baud));
+        sendCommandToPrd(QString("sf %1").arg(freq));
+        QThread::msleep(50);
+        sendCommandToPrd(QString("sb %1").arg(baud));
         QThread::msleep(50);
         sendCommandToPrd(QString("sm %1").arg(mod));
-   QThread::msleep(50);
-     sendCommandToPrd(QString("sd %1").arg(dev));
-  QThread::msleep(50);
+        QThread::msleep(50);
+sendCommandToPrd(QString("sd %1").arg(dev));
+      QThread::msleep(50);
         sendCommandToPrd(QString("ssm %1").arg(syncTx));
     }
     
-  // Отправляем команды на ПРМ
+    // Отправляем команды на ПРМ
     if (m_prmPort->isOpen()) {
-        sendCommandToPrm(QString("sf %1").arg(freq));
-    QThread::msleep(50);
-        sendCommandToPrm(QString("sb %1").arg(baud));
+     sendCommandToPrm(QString("sf %1").arg(freq));
+     QThread::msleep(50);
+     sendCommandToPrm(QString("sb %1").arg(baud));
         QThread::msleep(50);
-        sendCommandToPrm(QString("sm %1").arg(mod));
+      sendCommandToPrm(QString("sm %1").arg(mod));
         QThread::msleep(50);
-sendCommandToPrm(QString("sd %1").arg(dev));
-        QThread::msleep(50);
+        sendCommandToPrm(QString("sd %1").arg(dev));
+   QThread::msleep(50);
         sendCommandToPrm(QString("ssm %1").arg(syncRx));
         QThread::msleep(50);
         sendCommandToPrm(QString("sbw %1").arg(bw));
@@ -573,11 +596,11 @@ sendCommandToPrm(QString("sd %1").arg(dev));
     
     QString log = QString::fromUtf8("Применены общие настройки: Частота: %1 МГц, Модуляция: %2, Скорость: %3 бод/с, Девиация: %4 кГц, Синхр. ПРД: %5, Синхр. ПРМ: %6, Полоса ПРМ: %7 кГц")
         .arg(ui.carrierFrequencySpinBox->value())
-        .arg(ui.modulationTypeComboBox->currentText())
-        .arg(ui.baudRateSpinBox->value())
+  .arg(ui.modulationTypeComboBox->currentText())
+        .arg(baud)
         .arg(ui.frequencyDeviationSpinBox->value())
         .arg(ui.syncModeTxComboBox->currentIndex())
-      .arg(ui.syncModeRxComboBox->currentIndex())
+        .arg(ui.syncModeRxComboBox->currentIndex())
         .arg(ui.rxFilterBwSpinBox->value());
     logMessage(log);
 }
@@ -660,7 +683,14 @@ void diplom_v0::on_carrierFrequencySlider_valueChanged(int value)
 
 void diplom_v0::on_baudRateSlider_valueChanged(int value)
 {
-    logMessage(QString::fromUtf8("Скорость передачи изменена на: %1 бод/с").arg(value));
+    int baud = (value >= 0 && value < BAUD_RATES_COUNT) ? BAUD_RATES[value] : 9600;
+ logMessage(QString::fromUtf8("Скорость передачи изменена на: %1 бод/с").arg(baud));
+}
+
+void diplom_v0::on_baudRateComboBox_currentIndexChanged(int index)
+{
+    int baud = (index >= 0 && index < BAUD_RATES_COUNT) ? BAUD_RATES[index] : 9600;
+    logMessage(QString::fromUtf8("Скорость передачи выбрана: %1 бод/с").arg(baud));
 }
 
 void diplom_v0::on_outputPowerComboBox_currentTextChanged(const QString &text)
@@ -691,11 +721,6 @@ void diplom_v0::on_interferenceTypeComboBox_currentTextChanged(const QString &te
 void diplom_v0::on_interferencePowerSlider_valueChanged(int value)
 {
     logMessage(QString::fromUtf8("Мощность помехи изменена на: %1").arg(value));
-}
-
-void diplom_v0::on_baudRateSpinBox_valueChanged(int value)
-{
-    // Синхронизировано со слайдером
 }
 
 void diplom_v0::on_syncModeTxComboBox_currentTextChanged(const QString &text)
