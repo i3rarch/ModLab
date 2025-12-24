@@ -387,25 +387,38 @@ void diplom_v0::onPrmDataReceived()
     
     // Обрабатываем данные построчно
     while (m_prmBuffer.contains('\n')) {
-        int index = m_prmBuffer.indexOf('\n');
+   int index = m_prmBuffer.indexOf('\n');
         QByteArray line = m_prmBuffer.left(index);
         m_prmBuffer.remove(0, index + 1);
     
-        // Удаляем \r если есть
-    if (line.endsWith('\r')) {
-            line.chop(1);
+     // Удаляем \r если есть
+        if (line.endsWith('\r')) {
+line.chop(1);
         }
         
-        QString text = QString::fromUtf8(line);
- if (!text.isEmpty()) {
-     logMessage(QString::fromUtf8("ПРМ << %1").arg(text));
+   QString text = QString::fromUtf8(line);
+        if (!text.isEmpty()) {
+    logMessage(QString::fromUtf8("ПРМ << %1").arg(text));
+         
+     // Фильтруем сообщения настроек - показываем только RX данные
+            bool isSettingsResponse = text.startsWith("Frequency set") ||
+          text.startsWith("Baud rate set") ||
+          text.startsWith("Modulation set") ||
+         text.startsWith("Deviation set") ||
+     text.startsWith("Sync mode set") ||
+       text.startsWith("RX filter BW set") ||
+               text.startsWith("Unknown command") ||
+      text.startsWith("[DBG]") ||
+    text.contains("[DBG]");
+        
+          // Показываем в окне приёмника только данные пакетов (RX:)
+     if (!isSettingsResponse) {
+            ui.receivedDataPlainTextEdit->appendPlainText(text);
+            }
             
-     // Показываем принятые данные в окне приёмника
-     ui.receivedDataPlainTextEdit->appendPlainText(text);
-            
-     // Парсим данные для обновления статистики
-            parseRxData(text);
-    }
+            // Парсим данные для обновления статистики
+  parseRxData(text);
+  }
     }
 }
 
@@ -550,7 +563,7 @@ usedPorts << intPortName;
 void diplom_v0::on_applyGeneralSettingsButton_clicked()
 {
     // Формируем команды для устройств
-    int freq = ui.carrierFrequencySpinBox->value() * 1000; // МГц -> кГц
+ int freq = ui.carrierFrequencySpinBox->value() * 1000; // МГц -> кГц
     int baudIndex = ui.baudRateComboBox->currentIndex();
     int baud = (baudIndex >= 0 && baudIndex < BAUD_RATES_COUNT) ? BAUD_RATES[baudIndex] : 9600;
     QString mod;
@@ -559,50 +572,106 @@ void diplom_v0::on_applyGeneralSettingsButton_clicked()
         case 1: mod = "gfsk"; break;
         case 2: mod = "ook"; break;
         case 3: mod = "msk"; break;
-     default: mod = "2fsk";
- }
+   default: mod = "2fsk";
+    }
     int dev = ui.frequencyDeviationSpinBox->value();
-  int syncTx = ui.syncModeTxComboBox->currentIndex();
-    int syncRx = ui.syncModeRxComboBox->currentIndex();
+    int syncTx = ui.syncModeTxComboBox->currentIndex();
+  int syncRx = ui.syncModeRxComboBox->currentIndex();
     int bw = ui.rxFilterBwSpinBox->value();
     
+    bool prdConfigured = false;
+    bool prmConfigured = false;
+    
     // Отправляем команды на ПРД
-    if (m_prdPort->isOpen()) {
+ if (m_prdPort->isOpen()) {
+        logMessage(QString::fromUtf8("Применение настроек к ПРД..."));
         sendCommandToPrd(QString("sf %1").arg(freq));
+        m_prdPort->flush();
+  m_prdPort->waitForBytesWritten(50);
         QThread::msleep(50);
+        
         sendCommandToPrd(QString("sb %1").arg(baud));
+        m_prdPort->flush();
+  m_prdPort->waitForBytesWritten(50);
         QThread::msleep(50);
+  
         sendCommandToPrd(QString("sm %1").arg(mod));
+   m_prdPort->flush();
+      m_prdPort->waitForBytesWritten(50);
         QThread::msleep(50);
-sendCommandToPrd(QString("sd %1").arg(dev));
-      QThread::msleep(50);
+        
+     sendCommandToPrd(QString("sd %1").arg(dev));
+        m_prdPort->flush();
+        m_prdPort->waitForBytesWritten(50);
+        QThread::msleep(50);
+        
         sendCommandToPrd(QString("ssm %1").arg(syncTx));
+ m_prdPort->flush();
+        m_prdPort->waitForBytesWritten(50);
+        QThread::msleep(50);
+        
+        prdConfigured = true;
+    } else {
+     logMessage(QString::fromUtf8("ПРД: Порт не открыт, настройки не применены"));
     }
     
     // Отправляем команды на ПРМ
     if (m_prmPort->isOpen()) {
-     sendCommandToPrm(QString("sf %1").arg(freq));
-     QThread::msleep(50);
-     sendCommandToPrm(QString("sb %1").arg(baud));
+        logMessage(QString::fromUtf8("Применение настроек к ПРМ..."));
+ 
+        sendCommandToPrm(QString("sf %1").arg(freq));
+        m_prmPort->flush();
+        m_prmPort->waitForBytesWritten(50);
         QThread::msleep(50);
-      sendCommandToPrm(QString("sm %1").arg(mod));
+        
+ sendCommandToPrm(QString("sb %1").arg(baud));
+  m_prmPort->flush();
+        m_prmPort->waitForBytesWritten(50);
+ QThread::msleep(50);
+  
+        sendCommandToPrm(QString("sm %1").arg(mod));
+  m_prmPort->flush();
+        m_prmPort->waitForBytesWritten(50);
         QThread::msleep(50);
+   
         sendCommandToPrm(QString("sd %1").arg(dev));
-   QThread::msleep(50);
+        m_prmPort->flush();
+     m_prmPort->waitForBytesWritten(50);
+  QThread::msleep(50);
+        
         sendCommandToPrm(QString("ssm %1").arg(syncRx));
+        m_prmPort->flush();
+   m_prmPort->waitForBytesWritten(50);
         QThread::msleep(50);
-        sendCommandToPrm(QString("sbw %1").arg(bw));
+     
+    sendCommandToPrm(QString("sbw %1").arg(bw));
+    m_prmPort->flush();
+        m_prmPort->waitForBytesWritten(50);
+        
+      prmConfigured = true;
+    } else {
+ logMessage(QString::fromUtf8("ПРМ: Порт не открыт, настройки не применены"));
     }
     
+    // Итоговое сообщение
     QString log = QString::fromUtf8("Применены общие настройки: Частота: %1 МГц, Модуляция: %2, Скорость: %3 бод/с, Девиация: %4 кГц, Синхр. ПРД: %5, Синхр. ПРМ: %6, Полоса ПРМ: %7 кГц")
-        .arg(ui.carrierFrequencySpinBox->value())
-  .arg(ui.modulationTypeComboBox->currentText())
-        .arg(baud)
-        .arg(ui.frequencyDeviationSpinBox->value())
+   .arg(ui.carrierFrequencySpinBox->value())
+        .arg(ui.modulationTypeComboBox->currentText())
+     .arg(baud)
+   .arg(ui.frequencyDeviationSpinBox->value())
         .arg(ui.syncModeTxComboBox->currentIndex())
         .arg(ui.syncModeRxComboBox->currentIndex())
-        .arg(ui.rxFilterBwSpinBox->value());
+     .arg(ui.rxFilterBwSpinBox->value());
     logMessage(log);
+    
+    // Предупреждение если не все устройства сконфигурированы
+    if (!prdConfigured && !prmConfigured) {
+        logMessage(QString::fromUtf8("ВНИМАНИЕ: Ни одно устройство не сконфигурировано! Проверьте подключение."));
+    } else if (!prdConfigured) {
+        logMessage(QString::fromUtf8("ВНИМАНИЕ: ПРД не сконфигурирован"));
+    } else if (!prmConfigured) {
+        logMessage(QString::fromUtf8("ВНИМАНИЕ: ПРМ не сконфигурирован"));
+  }
 }
 
 void diplom_v0::on_startTransmissionButton_clicked()
