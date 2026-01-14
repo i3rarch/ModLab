@@ -361,3 +361,39 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Qt-specific files
+*.pro.user
+*.pro.user.*
+.qmake.stash
+moc_*.cpp
+moc_*.h
+qrc_*.cpp
+ui_*.h
+*.qm
+.qmake.cache
+
+# Qt generated files
+**/qt/
+**/moc/
+**/rcc/
+**/uic/
+qtvars.xml
+*.cbt
+
+# Qt Creator
+*.autosave
+
+# Qt Build directories
+build-*/
+
+# Compiled executables
+*.exe
+*.exe.recipe
+
+# VS Code
+.vscode/
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/settings.json
