@@ -1,6 +1,15 @@
 # ModLab
 
+[![Build](https://github.com/i3rarch/ModLab/actions/workflows/build.yml/badge.svg)](https://github.com/i3rarch/ModLab/actions/workflows/build.yml)
+
 Программное обеспечение для управления учебным стендом «Методы цифровой модуляции». Позволяет настраивать параметры передатчика, приемника и генератора помех, анализировать качество радиоканала в реальном времени.
+
+## Скачать
+
+**Готовые сборки доступны в [Releases](https://github.com/i3rarch/ModLab/releases)**
+
+- **Windows:** Скачайте `ModLab-Windows-x64.zip`, распакуйте и запустите `diplom_v0.exe`
+- **Linux:** Скачайте `ModLab-Linux-x64.tar.gz`, распакуйте и запустите `./run.sh`
 
 ## Возможности
 
@@ -134,16 +143,38 @@ ModLab/
 
 ## Устранение неполадок
 
+**Отсутствуют Qt библиотеки (при запуске собранного вручную):**
+```bash
+# Windows: используйте windeployqt
+windeployqt diplom_v0.exe
+
+# Linux: убедитесь, что Qt в LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/path/to/qt/lib:$LD_LIBRARY_PATH
+```
+
 **MSBuild не найден (VS Code):**
 ```bash
-# Запустите VS Code из Developer Command Prompt:
+# Запустите VS Code из Developer Command Prompt
 "C:\Program Files\Microsoft Visual Studio\2022\Professional\Common7\Tools\VsDevCmd.bat"
 code .
 ```
 
 **Qt не найден (CMake):**
 ```bash
-# Укажите путь к Qt:
-cmake .. -DCMAKE_PREFIX_PATH="C:/Qt/6.10.0/msvc2022_64"  # Windows
-cmake .. -DCMAKE_PREFIX_PATH="/usr/local/Qt-6.10.0"     # Linux/macOS
+# Укажите путь к Qt
+cmake .. -DCMAKE_PREFIX_PATH=/path/to/qt6
+```
+
+## CI/CD
+
+Проект использует GitHub Actions для автоматической сборки:
+
+- При каждом push в `main`/`master` собираются артефакты для Windows и Linux
+- При создании тега `v*` (например, `v1.0.0`) создается релиз с готовыми сборками
+- Артефакты доступны в разделе Actions → выбрать workflow → Artifacts
+
+**Создать релиз:**
+```bash
+git tag v1.0.0
+git push origin v1.0.0
 ```
