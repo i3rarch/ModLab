@@ -25,17 +25,21 @@ jobs:
     - name: Setup MSVC
       uses: microsoft/setup-msbuild@v1.1
     
+    - name: Configure with CMake
+      run: |
+        cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="${env:Qt6_DIR}"
+    
     - name: Build
       run: |
-        msbuild diplom_v0.sln /p:Configuration=Release /p:Platform=x64 /m
+        cmake --build build --config Release
     
     - name: Deploy Qt Dependencies
       run: |
-        windeployqt --release --no-translations x64/Release/diplom_v0.exe
+        windeployqt --release --no-translations build/Release/diplom_v0.exe
     
     - name: Package
       run: |
-        Compress-Archive -Path x64/Release/* -DestinationPath ModLab-Windows-x64.zip
+        Compress-Archive -Path build/Release/* -DestinationPath ModLab-Windows-x64.zip
     
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
